@@ -10,7 +10,7 @@ public class MongoModel
 {
 	private DB dB;
 	private DBCollection dBCollection;
-	private BasicDBObject basicDBObject;
+	//private BasicDBObject basicDBObject;
 	
 	public MongoModel()
 	{
@@ -18,7 +18,7 @@ public class MongoModel
 			this.dB = (new MongoClient("localhost", 27017)).getDB("SonarPingDatabase");
 			
 			this.dBCollection = dB.getCollection("UserDB");
-			this.basicDBObject = new BasicDBObject();
+			//this.basicDBObject = new BasicDBObject();
 		} 
 		catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -29,13 +29,15 @@ public class MongoModel
 	
 	public void insertMongoDB(String first, String last, String email, String pass, String type)	
 	{	
+		BasicDBObject basicDBObject;
+		
 		try{
-			this.basicDBObject = new BasicDBObject(); 
-			this.basicDBObject.append("First Name",first);
-			this.basicDBObject.append("Last Name",last);
-			this.basicDBObject.append("Email",email);
-			this.basicDBObject.append("Password",pass);
-			this.basicDBObject.append("Type",type);
+			basicDBObject = new BasicDBObject(); 
+			basicDBObject.append("First Name",first);
+			basicDBObject.append("Last Name",last);
+			basicDBObject.append("Email",email);
+			basicDBObject.append("Password",pass);
+			basicDBObject.append("Type",type);
 			this.dBCollection.insert(new DBObject[] {basicDBObject});		
 		}
 		
@@ -49,12 +51,16 @@ public class MongoModel
 	
 	public void deleteMongoDB(String identifier)
 	{
-		try{
-			this.basicDBObject.put("First Name", identifier);
-			this.dBCollection.remove(basicDBObject);
-		}
+		BasicDBObject basicDBObject;
 		
+		try
+		{	
+			basicDBObject = new BasicDBObject();		
+			basicDBObject.append("First Name", identifier);
+			this.dBCollection.remove(basicDBObject);
+		}		
 		catch(Exception ex){
+			JOptionPane.showMessageDialog(null, identifier);
 			JOptionPane.showMessageDialog(null, ex.getMessage());
 		}
 		
@@ -63,19 +69,20 @@ public class MongoModel
 	
 	public void updateMongoDB(String first, String last, String email, String pass, String type)
 	{
-		
+		BasicDBObject basicDBObject;
 		try{
-			this.basicDBObject.put("First Name", first);
+			basicDBObject = new BasicDBObject();
+			basicDBObject.put("First Name", first);
 			this.dBCollection.remove(basicDBObject);
 			
-			this.basicDBObject = null;
-			this.basicDBObject = new BasicDBObject(); 
+			basicDBObject = null;
+			basicDBObject = new BasicDBObject(); 
 			
-			this.basicDBObject.append("First Name",first);
-			this.basicDBObject.append("Last Name",last);
-			this.basicDBObject.append("Email",email);
-			this.basicDBObject.append("Password",pass);
-			this.basicDBObject.append("Type",type);
+			basicDBObject.append("First Name",first);
+			basicDBObject.append("Last Name",last);
+			basicDBObject.append("Email",email);
+			basicDBObject.append("Password",pass);
+			basicDBObject.append("Type",type);
 			
 			this.dBCollection.insert(new DBObject[] {basicDBObject});	
 		}
@@ -89,9 +96,11 @@ public class MongoModel
 	
 	public String selectMongoDB(String key, String value)
 	{
+		BasicDBObject basicDBObject;
 		String str = "";
 		
-		this.basicDBObject.put(key, value);
+		basicDBObject = new BasicDBObject();
+		basicDBObject.put(key, value);
 		DBCursor dbCursor = this.dBCollection.find(basicDBObject);		
 		while (dbCursor.hasNext()) 
 			str = str + " | " + dbCursor.next();
@@ -106,7 +115,7 @@ public class MongoModel
 	public String browseMongoDB(MongoView theView, MongoModel theModel)
 	{
 		String str = "";
-		String firstn, lastn, email, passwd, type;
+		String firstn, lastn, email, passwd, type/*, id*/;
 		DBCursor dbCursor = dBCollection.find();
 		DBObject obj;
 		
@@ -121,12 +130,16 @@ public class MongoModel
 			//str = str + "\n" + dbCursor.next();
 			obj = dbCursor.next();
 			str = str +	"\n" + obj;
+			//theView.userid.setText("");
+        	//theView.userid.setText(obj.get("_id").toString());
+        	//JOptionPane.showMessageDialog(null, obj.get("_id").toString());
 			firstn = (String)obj.get("First Name");
 			lastn  = (String)obj.get("Last Name");
 			email  = (String)obj.get("Email");
 			passwd = (String)obj.get("Password");
 			type   = (String)obj.get("Type");
-			theView.tblmodelView.addRow(new Object[] {firstn, lastn, email, passwd, type});			
+			//id     = obj.get("_id").toString();
+			theView.tblmodelView.addRow(new Object[] {firstn, lastn, email, passwd, type/*, id*/});			
 		}
 		
 		close();
@@ -172,7 +185,7 @@ public class MongoModel
 	}
 	
 	public void close(){
-		this.basicDBObject = null;
+		//this.basicDBObject = null;
 	}
 
 }

@@ -12,6 +12,8 @@ import javax.swing.event.ListSelectionListener;
 
 public class MongoView extends JFrame{
 	
+	private JLabel useridLabel = new JLabel("UserID: ");
+	JTextField userid = new JTextField(40);
 	private JLabel     firstNameLabel = new JLabel("Firstname: ");
 	JTextField firstName = new JTextField(10);
 	private JLabel     lastNameLabel = new JLabel("Lastname: ");
@@ -25,12 +27,13 @@ public class MongoView extends JFrame{
 	private JLabel userType = new JLabel("Type :");
 	String[] petStrings = { "Homeowner", "Dependant", "Time-Sensitive" };
 
+
 	
 	private JButton 	createButton = new JButton("Create");
 	private JButton 	deleteButton = new JButton("Delete");
 	private JButton 	updateButton = new JButton("Update");
 	private JButton     browseButton = new JButton("Browse");
-	//private JButton     removeallButton = new JButton("Remove All");
+	private JButton     removeallButton = new JButton("Remove All");
 	private JButton 	btnView1;
  
 	public JPanel panelMain;
@@ -51,7 +54,7 @@ public class MongoView extends JFrame{
 		btnView1 = new JButton("Reflesh");
 		panelView.add("South",btnView1);
 		
-		Object[] columns = {"FirstName", "LastName", "Email", "Password", "Type"};
+		Object[] columns = {"FirstName", "LastName", "Email", "Password", "Type", "Id"};
 		tblmodelView = new DefaultTableModel();
 		tblmodelView.setColumnIdentifiers(columns);
 		dbTableView = new JTable(tblmodelView);
@@ -73,6 +76,7 @@ public class MongoView extends JFrame{
 		        {
 		            // print first column value from selected row
 		            //JOptionPane.showMessageDialog(null,dbTableView.getValueAt(dbTableView.getSelectedRow(), 0).toString());
+		        	//JOptionPane.showMessageDialog(null, obj.get("_id").toString());
 		            firstName.setText(dbTableView.getValueAt(dbTableView.getSelectedRow(), 0).toString());
 		            lastName.setText(dbTableView.getValueAt(dbTableView.getSelectedRow(), 1).toString());
 		            email.setText(dbTableView.getValueAt(dbTableView.getSelectedRow(), 2).toString());
@@ -144,9 +148,16 @@ public class MongoView extends JFrame{
 		gbc.gridx = 3;
 		gbc.gridy = 5;		
 		panelCenter.add(browseButton,gbc);	
-		gbc.gridx = 5;
-		gbc.gridy = 5;		
-		//panelCenter.add(removeallButton,gbc);		
+		//gbc.gridx = 4;
+		//gbc.gridy = 5;		
+		//panelCenter.add(removeallButton,gbc);					
+		//gbc.gridx = 0;
+		//gbc.gridy = 6;
+		//panelCenter.add(useridLabel, gbc);
+		//gbc.gridx = 1;
+		//gbc.gridy = 6;	
+		//panelCenter.add(userid, gbc);
+		
 		setVisible(true);
 		panelMain.add("Center",panelCenter);
 		

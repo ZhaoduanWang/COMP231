@@ -54,7 +54,7 @@ public class MongoView extends JFrame{
 		btnView1 = new JButton("Reflesh");
 		panelView.add("South",btnView1);
 		
-		Object[] columns = {"FirstName", "LastName", "Email", "Password", "Type", "Id"};
+		Object[] columns = {"FirstName", "LastName", "Email", "Password", "Type"/*, "Id"*/};
 		tblmodelView = new DefaultTableModel();
 		tblmodelView.setColumnIdentifiers(columns);
 		dbTableView = new JTable(tblmodelView);
